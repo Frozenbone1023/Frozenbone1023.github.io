@@ -842,12 +842,17 @@
     }
 
     // ── 퀴즈 렌더링 ───────────────────────────────────────────────
+    let lastAnswer = null;
     function renderQuiz() {
       if (examMode && examQueue.length > 0) {
         currentQuiz = examQueue[examIndex];
       } else {
-        currentQuiz = practicePool[Math.floor(Math.random() * practicePool.length)];
-      }
+        let candidate;
+do {
+  candidate = practicePool[Math.floor(Math.random() * practicePool.length)];
+} while (candidate.answer === lastAnswer && practicePool.length > 1);
+currentQuiz = candidate;
+lastAnswer = currentQuiz.answer;
       questionAnswered = false;
 
       const titleEl   = document.getElementById("quizTitle");
