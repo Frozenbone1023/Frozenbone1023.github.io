@@ -853,7 +853,7 @@ do {
   candidate = practicePool[Math.floor(Math.random() * practicePool.length)];
 } while (candidate.answer === lastAnswer && practicePool.length > 1);
 currentQuiz = candidate;
-lastAnswer = currentQuiz.answer;
+lastAnswer = currentQuiz.answer;}
       questionAnswered = false;
 
       const titleEl   = document.getElementById("quizTitle");
