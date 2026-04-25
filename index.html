@@ -879,7 +879,7 @@
             const y = padding + (innerHeight / 4) * step;
             return `<line class="chart-grid" x1="${padding}" y1="${y}" x2="${width - padding}" y2="${y}"></line>`;
           }).join("")}
-          ${[-40, -20, 0, 20, 40].map((temp, step) => {
+          ${[40, 20, 0, -20, -40].map((temp, step) => {
             const y = padding + (innerHeight / 4) * step;
             return `<text class="chart-axis-text" x="${padding - 12}" y="${y + 4}" text-anchor="end">${temp}</text>`;
           }).join("")}
