@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>개쩌는 자료는 역시역시 사회부장이었다네</title>
+  <style>
+    :root {
+      --bg: #f6efe4;
+      --paper: #fffaf3;
+      --ink: #233138;
+      --sub: #617078;
+      --line: #dcccb5;
+      --accent: #cd6a31;
+      --accent-2: #2c6f68;
+      --accent-3: #9a4334;
+      --warm: #fff0dd;
+      --cool: #e8f3f1;
+      --dry: #f7e7da;
+      --polar: #edf4ff;
+      --sky: #d7ecf2;
+      --shadow: 0 14px 36px rgba(72, 51, 27, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #fae8cb 0, transparent 24%),
+        radial-gradient(circle at top right, #dcefe8 0, transparent 20%),
+        linear-gradient(180deg, #f8f2e9 0%, #efe3d4 100%);
+      line-height: 1.6;
+    }
+
+    .wrap {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 22px 0 56px;
+    }
+
+    .hero, .section {
+      background: rgba(255, 250, 243, 0.95);
+      border: 1px solid rgba(220, 204, 181, 0.92);
+      border-radius: 26px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .section { margin-top: 24px; }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+    }
+
+    .hero p, .section-intro, .footer-note {
+      margin: 0;
+      color: var(--sub);
+    }
+
+    .quick-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .quick-tags span, .location-chip {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      background: #f1e4d2;
+      border: 1px solid #dfc9ac;
+    }
+
+    .section h2 {
+      margin: 0 0 8px;
+      font-size: 26px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-intro { margin-bottom: 18px; }
+
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .compare-box, .cause-box { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .memory-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .quiz-layout { display: grid; gap: 16px; grid-template-columns: minmax(300px, 1.2fr) minmax(280px, 0.8fr); align-items: start; }
+
+    .card, .mini-box, .memory-panel, .quiz-panel, .control-panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .card { display: flex; flex-direction: column; gap: 10px; }
+    .card p { margin: 0; }
+
+    .card h3, .mini-box h3, .memory-panel h3, .quiz-panel h3, .control-panel h3 {
+      margin: 0 0 10px;
+      font-size: 19px;
+    }
+
+    .warm-box { background: var(--warm); }
+    .cool-box { background: var(--cool); }
+    .dry-box  { background: var(--dry);  }
+    .polar-box{ background: var(--polar);}
+    .cause-coral { background: #fff1e6; }
+    .cause-mint  { background: #e7f4ef; }
+    .cause-sand  { background: #f7eadb; }
+    .cause-sky   { background: #edf3ff; }
+
+    .type-pill {
+      display: inline-block;
+      margin-bottom: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .type-a { background: #cd6a31; }
+    .type-c { background: #2c6f68; }
+    .type-d { background: #5375a8; }
+    .type-e { background: #677aa5; }
+    .type-b { background: #9a4334; }
+    .type-h { background: #7b5d97; }
+
+    .note-list { margin: 0; padding-left: 18px; }
+    .note-list li + li { margin-top: 5px; }
+
+    .memory-item + .memory-item {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed #d8cbb7;
+    }
+
+    .memory-item strong { display: block; margin-bottom: 4px; font-size: 15px; }
+    .memory-item p { margin: 2px 0; font-size: 14px; }
+
+    .chart-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+
+    .chart-tag {
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      background: #f6ede1;
+    }
+
+    .chart-tag.rain { color: #1f6a63; background: #e4f2ef; }
+    .chart-tag.temp { color: #9b4f1f; background: #f8e2d2; }
+
+    .climate-chart {
+      width: 100%;
+      height: 370px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffdf9, #f7f0e5);
+      overflow: hidden;
+    }
+
+    .chart-axis-text { font-size: 11px; fill: #637075; font-weight: 700; }
+    .chart-grid { stroke: rgba(78, 98, 106, 0.16); stroke-width: 1; }
+    .chart-bar-rain { fill: rgba(44, 111, 104, 0.72); }
+    .chart-line-temp { fill: none; stroke: #cd6a31; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+    .chart-dot-temp { fill: #cd6a31; }
+
+    .quiz-form { display: grid; gap: 12px; margin-top: 14px; }
+
+    .answer-input {
+      width: 100%;
+      padding: 13px 16px;
+      border-radius: 14px;
+      border: 1px solid #d7b98a;
+      background: #fffdf9;
+      color: var(--ink);
+      font: inherit;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .answer-input:focus {
+      outline: 2px solid rgba(205, 106, 49, 0.25);
+      border-color: var(--accent);
+    }
+
+    .answer-help { margin: 0; color: var(--sub); font-size: 13px; }
+
+    .action-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 11px 14px;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    button:hover { transform: translateY(-1px); opacity: 0.92; }
+
+    .action-btn { background: var(--accent); color: #fff; }
+    .action-btn.alt { background: var(--accent-2); color: #fff; }
+    .action-btn.danger { background: var(--accent-3); color: #fff; }
+
+    .answer-list, .result-box {
+      margin-top: 12px;
+      padding: 13px;
+      border-radius: 14px;
+      font-size: 14px;
+    }
+
+    .answer-list { background: #f6eee2; border: 1px solid #dfc6a0; color: var(--sub); line-height: 1.5; }
+    .result-box  { min-height: 70px; background: #f7efe3; border: 1px dashed #d7b98a; white-space: pre-line; }
+
+    .result-correct { color: #1a5c3a; font-weight: 700; }
+    .result-wrong   { color: #7a1f1f; font-weight: 700; }
+
+    .score { margin-top: 10px; font-weight: 700; color: var(--accent-3); }
+
+    .flash-card {
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 10px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s;
+    }
+
+    .flash-card:hover { background: #fff5e8; border-radius: 20px; }
+    .flash-card small { color: var(--sub); font-weight: 700; }
+    .flash-main { font-size: clamp(20px, 3vw, 32px); font-weight: 800; letter-spacing: -0.03em; }
+    .flash-sub { min-height: 44px; color: var(--sub); font-size: 14px; }
+
+    .exam-badge {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      background: #ffe0cc;
+      color: var(--accent-3);
+      border: 1px solid #f0c0a0;
+      margin-top: 6px;
+    }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #f0e5d7;
+      font-family: Consolas, monospace;
+      font-size: 0.9em;
+    }
+
+    @media (max-width: 960px) { .quiz-layout { grid-template-columns: 1fr; } }
+    @media (max-width: 720px) { .hero, .section { padding: 18px; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>지리 FINAL 벼락치기!!</h1>
+      <p>핵심 정리, 위치 암기, 그래프 퀴즈(100개 이상), 플래시카드를 한 파일에 모았습니다.</p>
+      <div class="quick-tags">
+        <span>기후 기준</span>
+        <span>기후 원인 연결</span>
+        <span>사막·산맥·해안 정리</span>
+        <span>그래프 퀴즈 117개+</span>
+        <span>랜덤 시험모드</span>
+        <span>플래시카드</span>
+      </div>
+    </section>
+
+    <!-- 기후 핵심 정리 -->
+    <section class="section">
+      <h2>기후 핵심 정리</h2>
+      <p class="section-intro">시험에서 바로 쓰기 좋게 기준과 세부 특징을 묶었습니다.</p>
+      <div class="grid" id="climateCards"></div>
+      <div class="cause-box" style="margin-top:16px;">
+        <div class="mini-box cause-coral">
+          <h3>기후가 생기는 원인</h3>
+          <p><strong>적도수렴대:</strong> 상승기류, 구름 발달, 비 많음</p>
+          <p><strong>아열대 고압대:</strong> 하강기류, 건조, 사막 형성</p>
+          <p><strong>편서풍대:</strong> 중위도에서 서쪽→동쪽으로 불며 비를 가져옴</p>
+        </div>
+        <div class="mini-box cause-mint">
+          <h3>원인과 기후 연결</h3>
+          <p><strong>열대우림:</strong> 적도수렴대</p>
+          <p><strong>사바나:</strong> 우기: 적도수렴대, 건기: 아열대 고압대</p>
+          <p><strong>지중해성:</strong> 여름: 아열대 고압대, 겨울: 편서풍대</p>
+          <p><strong>서안 해양성:</strong> 편서풍대 + 난류</p>
+        </div>
+        <div class="mini-box cause-sand">
+          <h3>수목기후</h3>
+          <p>나무가 자랄 수 있는 기후</p>
+          <p><strong>포함:</strong> 열대, 온대, 냉대</p>
+        </div>
+        <div class="mini-box cause-sky">
+          <h3>무수목기후</h3>
+          <p>나무가 자라기 어려운 기후</p>
+          <p><strong>포함:</strong> 건조, 툰드라, 빙설, 고산 일부</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 헷갈리는 포인트 -->
+    <section class="section">
+      <h2>헷갈리는 포인트 빠르게 비교</h2>
+      <div class="compare-box">
+        <div class="mini-box warm-box">
+          <h3>열대</h3>
+          <p><strong>기준:</strong> 최한월 18도 이상</p>
+          <p><strong>암기:</strong> 연교차보다 일교차가 더 두드러짐</p>
+          <p><strong>포인트:</strong> 열대우림은 늘 비<br>열대 몬순은 짧은 건기<br> 사바나는 건기·우기 뚜렷</p>
+        </div>
+        <div class="mini-box cool-box">
+          <h3>온대</h3>
+          <p><strong>기준:</strong> 최한월 -3~18도</p>
+          <p><strong>포인트:</strong> 지중해성: 여름 건조<br>서안 해양성: 연중 습윤<br>온대 겨울건조: 겨울 매우 건조</p>
+        </div>
+        <div class="mini-box dry-box">
+          <h3>건조</h3>
+          <p><strong>기준:</strong> 연강수량 500mm 미만</p>
+          <p><strong>포인트:</strong> 스텝 250~500mm<br>사막 0~250mm</p>
+        </div>
+        <div class="mini-box polar-box">
+          <h3>냉대·한대</h3>
+          <p><strong>냉대:</strong> 최한월 -3도 미만, 최난월 10도 초과</p>
+          <p><strong>한대:</strong> 툰드라: 최난월 0~10도, 빙설: 최난월 0도 미만</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 사막·산맥·해안 -->
+    <section class="section">
+      <h2>사막, 산맥, 해안 암기</h2>
+      <p class="section-intro">형성 이유 1줄 + 위치 1줄로 빠르게 정리했습니다.</p>
+      <div class="memory-grid">
+        <div class="memory-panel">
+          <h3>사막</h3>
+          <div class="memory-item"><strong>사하라 사막</strong><p>이유: 아열대 고압대</p><p>위치: 북아프리카</p></div>
+          <div class="memory-item"><strong>타클라마칸 사막</strong><p>이유: 격해도</p><p>위치: 중국 서부 내륙</p></div>
+          <div class="memory-item"><strong>고비 사막</strong><p>이유: 격해도</p><p>위치: 몽골·중국 북부</p></div>
+          <div class="memory-item"><strong>칼라하리 사막</strong><p>이유: 아열대 고압대</p><p>위치: 남부 아프리카 내륙</p></div>
+          <div class="memory-item"><strong>파타고니아 사막</strong><p>이유: 바람그늘</p><p>위치: 남아메리카 남부 동안</p></div>
+          <div class="memory-item"><strong>아타카마 사막</strong><p>이유: 한류</p><p>위치: 남아메리카 서안</p></div>
+          <div class="memory-item"><strong>나미브 사막</strong><p>이유: 한류</p><p>위치: 남서아프리카 서안</p></div>
+          <div class="memory-item"><strong>오스트레일리아 사막</strong><p>이유: 아열대 고압대</p><p>위치: 오스트레일리아</p></div>
+        </div>
+        <div class="memory-panel">
+          <h3>산맥</h3>
+          <div class="memory-item"><strong>신기 습곡산지</strong><p>대표: 알프스, 히말라야, 안데스, 로키</p><p>특징: 중생대~신생대, 해발고도 높고 험함, 구리·주석·석유, 지진·화산</p></div>
+          <div class="memory-item"><strong>고기 습곡산지</strong><p>대표: 애팔래치아, 우랄, 스칸디나비아, 드라켄즈버그, 그레이트디바이딩</p><p>특징: 고생대~중생대, 해발고도 낮음, 석탄 많음</p></div>
+          <div class="memory-item"><strong>로키</strong><p>북아메리카 서부</p></div>
+          <div class="memory-item"><strong>안데스</strong><p>남아메리카 서부</p></div>
+          <div class="memory-item"><strong>알프스</strong><p>유럽 남부</p></div>
+          <div class="memory-item"><strong>히말라야</strong><p>인도 북쪽</p></div>
+          <div class="memory-item"><strong>애팔래치아</strong><p>북아메리카 동부</p></div>
+          <div class="memory-item"><strong>우랄</strong><p>유럽과 아시아 경계</p></div>
+          <div class="memory-item"><strong>스칸디나비아</strong><p>북유럽</p></div>
+          <div class="memory-item"><strong>드라켄즈버그</strong><p>아프리카 남동부</p></div>
+          <div class="memory-item"><strong>그레이트디바이딩</strong><p>오스트레일리아 동부</p></div>
+        </div>
+        <div class="memory-panel">
+          <h3>해안</h3>
+          <div class="memory-item"><strong>리아스 해안</strong><p>위치: 에스파냐 북서부</p><p>특징: V자곡, 하천 침식, 섬,반도,만 등이 많은 복잡한 해안선 </p></div>
+          <div class="memory-item"><strong>피오르 해안</strong><p>위치: 노르웨이 서부</p><p>특징: U자곡, 빙하 침식, 좁고 긴 형태의 만이 많으며 수심이 깊음</p></div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 그래프 퀴즈 -->
+    <section class="section">
+      <h2>그래프 보고 기후 맞히기</h2>
+      <p class="section-intro">
+        강수량(초록 막대) 0~400mm / 기온(주황선) -40~40도.
+        변형 데이터가 <strong>117가지+</strong> 자동 생성되어 매번 다른 그래프가 나옵니다.
+      </p>
+      <div class="quiz-layout">
+        <div class="quiz-panel">
+          <h3 id="quizTitle">기후 그래프 문제</h3>
+          <div class="chart-meta">
+            <span class="chart-tag rain">초록 막대: 강수량 0~400mm</span>
+            <span class="chart-tag temp">주황선: 기온 -40~40도</span>
+          </div>
+          <div id="chart" class="climate-chart"></div>
+        </div>
+        <div class="quiz-panel">
+          <h3>주관식 입력</h3>
+          <div class="quiz-form">
+            <input id="answerInput" class="answer-input" type="text" placeholder="" autocomplete="off" />
+            <p class="answer-help">기후 이름을 한글로 입력하세요. 띄어쓰기는 조금 달라도 맞게 처리합니다.</p>
+          </div>
+          <div class="action-row">
+            <button class="action-btn" id="checkAnswerBtn">정답 확인</button>
+            <button class="action-btn alt" id="nextQuizBtn">다음 문제</button>
+            <button class="action-btn alt" id="revealBtn">정답 보기</button>
+            <button class="action-btn danger" id="startExamBtn">랜덤 시험 시작</button>
+          </div>
+          <div class="answer-list" id="examInfo">일반 연습 모드</div>
+          <div class="result-box" id="quizResult">문제를 시작해 보세요.</div>
+          <div class="score" id="scoreBox">점수: 0 / 0</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 플래시카드 -->
+    <section class="section">
+      <h2>플래시카드 암기</h2>
+      <p class="section-intro">카드를 눌러 앞면·뒷면을 바꾸면서 빠르게 반복하세요.</p>
+      <div class="grid">
+        <div class="control-panel">
+          <div class="flash-card" id="flashCard">
+            <small id="flashMode">앞면: 질문</small>
+            <div class="flash-main" id="flashMain">로딩 중...</div>
+            <div class="flash-sub" id="flashSub"></div>
+          </div>
+          <div class="action-row">
+            <button class="action-btn" id="nextFlashBtn">다음 카드</button>
+            <button class="action-btn alt" id="shuffleFlashBtn">무작위 섞기</button>
+          </div>
+        </div>
+        <div class="control-panel">
+        
+          <p style="color:var(--sub); font-size:14px; margin:0;">
+            플래시카드 총 <strong id="flashTotal"></strong>장. 카드 클릭으로 뒤집고, 다음 카드 버튼으로 넘기세요.<br><br>
+            그래프 퀴즈는 연습 모드와 랜덤 시험 모드 모두 <strong>변형된 그래프</strong>를 사용해 같은 기후도 다른 숫자로 나옵니다.
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- 추가 정리 -->
+    <section class="section">
+      <h2>추가 정리</h2>
+      <p class="section-intro"></p>
+      <div class="memory-grid">
+
+        <div class="memory-panel">
+          <h3>1차 수정</h3>
+          그래프가 조금씩 변형되어서 나오고 시험 모드가 생겼습니다!!
+          +내용 추가, 가독성 좋게 바꿈
+          +직전 나왔던 그래프가 안나올겁니다 아마
+        </div>
+
+        
+        <div class="memory-panel">
+          <h3>주의</h3>
+          99% AI가 만들었기 때문에 틀린 내용이 조금 있을 수 도 있습니다ㅜㅜ 알아서 보세요
+          그래도 프린트 내용은 제가 다 타이핑 한거에요
+          +근데 거의 다 맞는 내용이긴함
+        </div>
+                
+
+
+
+        <div class="memory-panel">
+          <h3>없는내용이나 필요한거,틀린 내용 있으면 말하세요</h3>
+          만들수 있는지는 모름
+        </div>
+
+       
+
+        <div class="memory-panel">
+          <h3>2차 수정!!</h3>
+         +남반구 그래프<br>
+         +이제 그래프가 더 명확해집니다!!
+        </div>
+
+        <div class="memory-panel">
+          <h3></h3>
+         
+        </div>
+
+        <div class="memory-panel">
+          <h3></h3>
+         
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // ── 기후 카드 데이터 ───────────────────────────────────────────
+    const climateData = [
+      {
+        category: "열대", label: "열대 기후", colorClass: "type-a",
+        points: ["최한월 18도 이상", "연교차 < 일교차", "연중 고온 지역"],
+        details: [
+          "열대우림: 연중 고온다습, 적도수렴대, 최소우월 60mm 이상",
+          "열대 몬순: 짧은 건기, 계절풍 영향, 메갈라야·아삼 지방",
+          "사바나: 건기(아열대 고압대)와 우기(적도수렴대) 뚜렷"
+        ]
+      },
+      {
+        category: "온대", label: "온대 기후", colorClass: "type-c",
+        points: ["최한월 -3~18도", "중위도에 넓게 분포", "강수 패턴으로 세분"],
+        details: [
+          "지중해성: 여름 고온건조(아열대 고압대), 겨울 온난습윤(편서풍대)",
+          "서안 해양성: 여름 냉량습윤, 겨울 온난습윤, 편서풍대+난류",
+          "온대 겨울건조: 여름 고온다습, 겨울 매우 건조"
+        ]
+      },
+      {
+        category: "냉대", label: "냉대 기후", colorClass: "type-d",
+        points: ["최한월 -3도 미만", "최난월 10도 초과", "연교차 큼"],
+        details: ["냉대 습윤: 연중 강수", "냉대 겨울건조: 겨울 강수 매우 적음"]
+      },
+      {
+        category: "한대", label: "한대 기후", colorClass: "type-e",
+        points: ["최난월 10도 이하", "여름 매우 짧음", "식생 제한"],
+        details: [
+          "툰드라: 최난월 0~10도, 여름 일시적 융해",
+          "빙설: 최난월 0도 미만, 연중 동결"
+        ]
+      },
+      {
+        category: "건조", label: "건조 기후", colorClass: "type-b",
+        points: ["연강수량 500mm 미만", "증발량 > 강수량", "강수량 숫자 구분 중요"],
+        details: [
+          "스텝: 250~500mm, 짧은 우기",
+          "사막: 0~250mm",
+          "형성 이유: 아열대 고압대, 한류, 바람그늘, 격해도"
+        ]
+      },
+      {
+        category: "고산", label: "열대 고산 기후", colorClass: "type-h",
+        points: ["연중 온난 (상춘기후)", "연교차 < 일교차",],
+        details: ["같은 위도보다 시원함", "대표 도시: 키토"]
+      }
+    ];
+
+    // ── 베이스 퀴즈 데이터 (13개 기후) ───────────────────────────
+    const quizData = [
+      {
+        answer: "열대우림",
+        aliases: ["열대우림", "열대 우림"],
+        rain: [210,220,230,240,250,230,220,210,220,240,230,220],
+        temp: [27,27,27,28,28,27,27,27,27,27,27,27],
+        explanation: "모든 달 강수량 높고 최소우월 60mm 이상 → 열대우림."
+      },
+      {
+        answer: "열대 몬순",
+        aliases: ["열대몬순","열대 몬순","몬순"],
+        rain: [18,22,35,75,220,400,400,400,310,130,40,20],
+        temp: [25,26,28,29,29,28,27,27,27,27,26,25],
+        explanation: "짧은 건기 + 여름철 강수 폭증 → 열대 몬순."
+      },
+      {
+        answer: "사바나",
+        aliases: ["사바나"],
+        rain: [12,18,35,80,140,210,250,230,160,70,25,10],
+        temp: [25,26,27,28,28,27,26,26,27,27,26,25],
+        explanation: "건기·우기가 뚜렷하게 구분 → 사바나."
+      },
+      {
+        answer: "지중해성",
+        aliases: ["지중해성","지중해성 기후","지중해성기후"],
+        rain: [92,88,70,48,24,9,4,6,19,54,86,98],
+        temp: [8,10,13,16,20,24,27,27,23,18,12,9],
+        explanation: "여름 거의 비 없고 겨울에 강수 집중 → 지중해성."
+      },
+      {
+        answer: "서안 해양성",
+        aliases: ["서안해양성","서안 해양성","서안 해양성 기후"],
+        rain: [78,66,71,58,62,69,71,76,79,92,88,84],
+        temp: [4,5,7,9,12,15,17,17,15,11,7,5],
+        explanation: "연중 강수 고르고 기온 연교차 작음 → 서안 해양성."
+      },
+      {
+        answer: "온대 겨울건조",
+        aliases: ["온대겨울건조","온대 겨울건조","겨울건조"],
+        rain: [4,6,12,35,70,150,260,240,120,40,12,5],
+        temp: [-1,2,8,15,21,25,28,27,22,15,7,1],
+        explanation: "여름 강수 집중, 겨울 매우 건조 → 온대 겨울건조."
+      },
+      {
+        answer: "스텝",
+        aliases: ["스텝","스텝기후","스텝 기후"],
+        rain: [8,10,15,22,35,48,55,43,30,20,12,10],
+        temp: [-3,1,8,16,22,27,30,28,21,13,5,-1],
+        explanation: "강수 적지만 사막보다 많음(250~500mm) → 스텝."
+      },
+      {
+        answer: "사막",
+        aliases: ["사막","사막기후","사막 기후"],
+        rain: [2,1,1,0,0,0,1,1,1,2,3,2],
+        temp: [14,17,21,26,31,35,37,36,32,26,19,15],
+        explanation: "연중 강수 거의 없음(0~250mm) → 사막."
+      },
+     
+    
+
+      {
+        answer: "툰드라",
+        aliases: ["툰드라","툰드라기후","툰드라 기후"],
+        rain: [12,10,11,15,18,24,30,28,23,18,15,12],
+        temp: [-22,-20,-15,-8,0,5,7,6,3,-4,-12,-19],
+        explanation: "최난월 0~10도 → 툰드라."
+      },
+      {
+        answer: "빙설",
+        aliases: ["빙설","빙설기후","빙설 기후"],
+        rain: [6,5,6,7,8,10,12,11,8,7,6,5],
+        temp: [-38,-40,-37,-32,-25,-18,-12,-15,-23,-30,-35,-38],
+        explanation: "최난월도 0도 미만 → 빙설."
+      },
+      {
+        answer: "열대 고산",
+        aliases: ["열대고산","열대 고산","열대 고산 기후"],
+        rain: [35,45,70,110,135,90,60,55,80,120,95,50],
+        temp: [13,13,14,14,14,13,13,13,14,14,14,13],
+        explanation: "연중 기온 변화 작고 온난, 고도 효과 → 열대 고산."
+      },
+      {
+        answer: "지중해성",
+        aliases: ["지중해성","지중해성 기후","지중해성기후"],
+        rain: [4,6,19,54,86,98,92,88,70,48,24,9],
+        temp: [27,27,23,18,12,9,8,10,13,16,20,24],
+        explanation: "여름(1~2월) 거의 비 없고 겨울(6~7월)에 강수 집중 → 지중해성. (남반구)"
+      },
+      {
+        answer: "서안 해양성",
+        aliases: ["서안해양성","서안 해양성","서안 해양성 기후"],
+        rain: [79,92,88,84,78,66,71,58,62,69,71,76],
+        temp: [15,11,7,5,4,5,7,9,12,15,17,17],
+        explanation: "연중 강수 고르고 기온 연교차 작음 → 서안 해양성. (남반구)"
+      },
+      {
+        answer: "사바나",
+        aliases: ["사바나"],
+        rain: [160,70,25,10,12,18,35,80,140,210,250,230],
+        temp: [27,27,26,25,25,26,26,26,27,27,27,27],
+        explanation: "건기·우기가 뚜렷하게 구분 → 사바나. (남반구)"
+      },
+      {
+        answer: "온대 겨울건조",
+        aliases: ["온대겨울건조","온대 겨울건조","겨울건조"],
+        rain: [120,40,12,5,4,6,12,35,70,150,260,240],
+        temp: [22,15,7,1,-1,2,8,15,21,25,28,27],
+        explanation: "여름(1월) 강수 집중, 겨울(6~7월) 매우 건조 → 온대 겨울건조. (남반구)"
+      },
+      {
+        answer: "열대우림",
+        aliases: ["열대우림","열대 우림"],
+        rain: [220,240,230,220,210,220,230,240,250,230,220,210],
+        temp: [27,27,27,27,27,27,27,28,28,27,27,27],
+        explanation: "모든 달 강수량 높고 최소우월 60mm 이상 → 열대우림. (남반구)"
+      },
+      {
+        answer: "스텝",
+        aliases: ["스텝","스텝기후","스텝 기후"],
+        rain: [30,20,12,10,8,10,15,22,35,48,55,43],
+        temp: [21,13,5,-1,-3,1,8,16,22,27,30,28],
+        explanation: "강수 적지만 사막보다 많음(250~500mm) → 스텝. (남반구)"
+      },
+      {
+        answer: "사막",
+        aliases: ["사막","사막기후","사막 기후"],
+        rain: [1,2,3,2,2,1,1,0,0,0,1,1],
+        temp: [32,26,19,15,14,17,21,26,31,35,37,36],
+        explanation: "연중 강수 거의 없음(0~250mm) → 사막. (남반구)"
+      },
+    ];
+
+    // ── 변형 생성 함수 ────────────────────────────────────────────
+    function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+    function buildVariants(baseList) {
+      const result = [];
+      baseList.forEach((item) => {
+        // 기후별 허용 범위 정의
+        const rules = getClimatRules(item.answer);
+        // 9가지 변형 생성
+        for (let vi = 0; vi < 9; vi++) {
+          const rain = item.rain.map((v, mi) => {
+            const scale  = 0.88 + Math.sin(vi * 1.3 + mi) * 0.12;
+            const offset = Math.cos(vi * 0.9 + mi * 0.4) * rules.rainJitter;
+            let val = Math.round(v * scale + offset);
+            // 기후별 강수 제약 적용
+            if (rules.rainMin !== undefined) val = Math.max(val, rules.rainMin[mi] ?? 0);
+            if (rules.rainMax !== undefined) val = Math.min(val, rules.rainMax[mi] ?? 400);
+            return clamp(val, 0, 400);
+          });
+          const temp = item.temp.map((v, mi) => {
+            const offset = Math.sin(vi * 0.7 + mi * 1.1) * rules.tempJitter;
+            let val = Math.round(v + offset);
+            // 기후별 기온 제약 적용
+            if (rules.tempFloor !== undefined) val = Math.max(val, rules.tempFloor);
+            if (rules.tempCeil  !== undefined) val = Math.min(val, rules.tempCeil);
+            if (rules.warmestMin !== undefined) {
+              // 최난월 보장
+              const peak = Math.max(...temp.slice(0, mi).concat([val]));
+            }
+            return clamp(val, -40, 40);
+          });
+          // 최난월/최한월 사후 보정
+          const corrected = enforceTempRules(temp, rules);
+          result.push({ ...item, rain, temp: corrected, variantId: `${item.answer}-${vi}` });
+        }
+      });
+      return result;
+    }
+
+    function getClimatRules(answer) {
+      const rules = {
+        rainJitter: 15, tempJitter: 1.5,
+      };
+      switch (answer) {
+        case "열대우림":
+          // 모든 달 60mm 이상, 기온 연교차 2도 미만
+          rules.rainJitter = 20;
+          rules.tempJitter = 0.8;
+          rules.rainFloorAll = 65;
+          rules.warmestMin = 25; rules.coldestMin = 24;
+          break;
+        case "열대 몬순":
+          // 건기 달(1~3, 11~12) 은 적고, 6~9월 폭증
+          rules.rainJitter = 25;
+          rules.tempJitter = 1.0;
+          rules.warmestMin = 24; rules.coldestMin = 22;
+          rules.dryMonths  = [0,1,2,10,11]; // 0-indexed
+          rules.wetMonths  = [5,6,7,8];
+          break;
+        case "사바나":
+          // 건기와 우기 극단적으로
+          rules.rainJitter = 18;
+          rules.tempJitter = 1.2;
+          rules.warmestMin = 24; rules.coldestMin = 22;
+          rules.dryMonths  = [11,0,1,2,3];
+          rules.wetMonths  = [5,6,7,8,9];
+          rules.dryMax     = 15;  // 건기 최대 15mm
+          rules.wetMin     = 120; // 우기 최소 120mm
+          break;
+        case "지중해성":
+          // 여름(6~8) 극건조, 겨울(12~2) 습윤
+          rules.rainJitter = 12;
+          rules.tempJitter = 1.5;
+          rules.summerDryMax = 8;
+          rules.winterWetMin = 60;
+          rules.warmestMin = 22; rules.coldestMax = 14;
+          break;
+        case "서안 해양성":
+          // 연중 강수 균등, 연교차 작음
+          rules.rainJitter = 10;
+          rules.tempJitter = 1.0;
+          rules.rainFloorAll = 45;
+          rules.warmestMax = 22; rules.coldestMin = 2;
+          rules.maxAnnualTempRange = 14;
+          break;
+        case "온대 겨울건조":
+          // 겨울(12~2) 극건조, 여름(6~8) 다습
+          rules.rainJitter = 20;
+          rules.tempJitter = 1.5;
+          rules.winterDryMax = 8;
+          rules.summerWetMin = 100;
+          rules.warmestMin = 22;
+          break;
+        case "스텝":
+          // 연강수 250~500mm, 연중 적음
+          rules.rainJitter = 8;
+          rules.tempJitter = 2.0;
+          rules.annualRainMin = 250; rules.annualRainMax = 500;
+          break;
+        case "사막":
+          // 거의 0, 최대 달도 10mm 이하
+          rules.rainJitter = 2;
+          rules.tempJitter = 2.0;
+          rules.rainCeilAll = 12;
+          rules.warmestMin = 28;
+          break;
+        case "냉대 습윤":
+          // 연중 강수, 연교차 매우 큼
+          rules.rainJitter = 12;
+          rules.tempJitter = 1.5;
+          rules.coldestMax = -5; rules.warmestMin = 12;
+          rules.rainFloorAll = 25;
+          break;
+        case "냉대 겨울건조":
+          // 겨울 극건조, 여름 강수, 연교차 매우 큼
+          rules.rainJitter = 15;
+          rules.tempJitter = 1.5;
+          rules.coldestMax = -8; rules.warmestMin = 14;
+          rules.winterDryMax = 8;
+          rules.summerWetMin = 60;
+          break;
+        case "툰드라":
+          // 최난월 0~10도 엄수
+          rules.rainJitter = 5;
+          rules.tempJitter = 0.8;
+          rules.warmestMin = 1; rules.warmestMax = 9;
+          rules.coldestMax = -8;
+          break;
+        case "빙설":
+          // 최난월도 0도 미만 엄수
+          rules.rainJitter = 3;
+          rules.tempJitter = 0.8;
+          rules.warmestMax = -1;
+          rules.coldestMax = -30;
+          break;
+        case "열대 고산":
+          // 연중 온난, 연교차 2도 미만
+          rules.rainJitter = 18;
+          rules.tempJitter = 0.5;
+          rules.warmestMin = 12; rules.warmestMax = 17;
+          rules.coldestMin = 11; rules.coldestMax = 16;
+          break;
+      }
+      return rules;
+    }
+
+    function enforceTempRules(temp, rules) {
+      let t = [...temp];
+      const warmest = Math.max(...t);
+      const coldest = Math.min(...t);
+      const warmIdx = t.indexOf(warmest);
+      const coldIdx = t.indexOf(coldest);
+
+      if (rules.warmestMin !== undefined && warmest < rules.warmestMin) {
+        const diff = rules.warmestMin - warmest;
+        t[warmIdx] += diff;
+      }
+      if (rules.warmestMax !== undefined && warmest > rules.warmestMax) {
+        const diff = warmest - rules.warmestMax;
+        t[warmIdx] -= diff;
+      }
+      if (rules.coldestMin !== undefined && coldest < rules.coldestMin) {
+        const diff = rules.coldestMin - coldest;
+        t[coldIdx] += diff;
+      }
+      if (rules.coldestMax !== undefined && coldest > rules.coldestMax) {
+        const diff = coldest - rules.coldestMax;
+        t[coldIdx] -= diff;
+      }
+      if (rules.maxAnnualTempRange !== undefined) {
+        const range = Math.max(...t) - Math.min(...t);
+        if (range > rules.maxAnnualTempRange) {
+          const excess = range - rules.maxAnnualTempRange;
+          t[warmIdx] -= excess / 2;
+          t[coldIdx] += excess / 2;
+        }
+      }
+      return t.map(v => Math.round(clamp(v, -40, 40)));
+    }
+
+    function applyRainRules(rain, rules, answer) {
+      let r = [...rain];
+      // 전체 하한
+      if (rules.rainFloorAll !== undefined)
+        r = r.map(v => Math.max(v, rules.rainFloorAll));
+      // 전체 상한
+      if (rules.rainCeilAll !== undefined)
+        r = r.map(v => Math.min(v, rules.rainCeilAll));
+      // 사바나 건기/우기 극단화
+      if (answer === "사바나") {
+        rules.dryMonths.forEach(m => { r[m] = Math.min(r[m], rules.dryMax); });
+        rules.wetMonths.forEach(m => { r[m] = Math.max(r[m], rules.wetMin); });
+      }
+      // 열대 몬순 건기/우기
+      if (answer === "열대 몬순") {
+        rules.dryMonths.forEach(m => { r[m] = Math.min(r[m], 40); });
+        rules.wetMonths.forEach(m => { r[m] = Math.max(r[m], 280); });
+      }
+      // 지중해성 여름 건조, 겨울 습윤
+      if (answer === "지중해성") {
+        [5,6,7].forEach(m => { r[m] = Math.min(r[m], rules.summerDryMax ?? 8); });
+        [11,0,1].forEach(m => { r[m] = Math.max(r[m], rules.winterWetMin ?? 60); });
+      }
+      // 온대 겨울건조
+      if (answer === "온대 겨울건조") {
+        [11,0,1].forEach(m => { r[m] = Math.min(r[m], rules.winterDryMax ?? 8); });
+        [5,6,7].forEach(m => { r[m] = Math.max(r[m], rules.summerWetMin ?? 100); });
+      }
+      // 냉대 겨울건조
+      if (answer === "냉대 겨울건조") {
+        [11,0,1].forEach(m => { r[m] = Math.min(r[m], rules.winterDryMax ?? 8); });
+        [5,6,7].forEach(m => { r[m] = Math.max(r[m], rules.summerWetMin ?? 60); });
+      }
+      // 스텝 연강수 범위
+      if (answer === "스텝") {
+        const total = r.reduce((a,b) => a+b, 0);
+        if (total < 250) {
+          const diff = (250 - total) / 12;
+          r = r.map(v => Math.round(v + diff));
+        }
+        if (total > 500) {
+          const scale = 500 / total;
+          r = r.map(v => Math.round(v * scale));
+        }
+      }
+      return r.map(v => clamp(Math.round(v), 0, 400));
+    }
+
+    function buildVariantsFinal(baseList) {
+      const result = [];
+      baseList.forEach((item) => {
+        const rules = getClimatRules(item.answer);
+        for (let vi = 0; vi < 9; vi++) {
+          const seed1 = vi * 7.3;
+          const seed2 = vi * 3.1;
+          let rain = item.rain.map((v, mi) => {
+            const scale  = 0.85 + Math.abs(Math.sin(seed1 + mi * 0.8)) * 0.25;
+            const offset = Math.cos(seed2 + mi * 1.2) * rules.rainJitter;
+            return Math.round(v * scale + offset);
+          });
+          rain = applyRainRules(rain, rules, item.answer);
+
+          let temp = item.temp.map((v, mi) => {
+            const offset = Math.sin(seed1 * 0.5 + mi * 0.7) * rules.tempJitter;
+            return Math.round(v + offset);
+          });
+          temp = enforceTempRules(temp, rules);
+
+          result.push({ ...item, rain, temp, variantId: `${item.answer}-${vi}` });
+        }
+      });
+      return result;
+    }
+
+    // 연습: 13 × 9 = 117개 / 시험: 13 × 9 = 117개 (별도 세트)
+    const practicePool = buildVariantsFinal(quizData);
+    // 시험용은 seed를 다르게 줘서 별도 세트 생성
+    const examPool = buildVariantsFinal(quizData.map(item => ({
+      ...item,
+      rain: item.rain.map((v, i) => clamp(Math.round(v * 1.03 + Math.sin(i * 2.1) * 5), 0, 400)),
+      temp: item.temp.map((v, i) => Math.round(v + Math.cos(i * 1.7) * 0.8))
+    })));
+    // ── 상태 ──────────────────────────────────────────────────────
+    let currentQuiz     = null;
+    let solvedCount     = 0;
+    let totalCount      = 0;
+    let questionAnswered= false;
+    let examMode        = false;
+    let examQueue       = [];
+    let examIndex       = 0;
+    let examCorrect     = 0;
+
+    // ── 플래시카드 데이터 ─────────────────────────────────────────
+    const flashData = [
+      { front:"열대의 기준은?", back:"최한월 18도 이상, 연교차 < 일교차" },
+      { front:"적도수렴대의 특징은?", back:"상승기류, 구름 발달, 비 많음" },
+      { front:"아열대 고압대의 특징은?", back:"하강기류, 건조, 사막 형성" },
+      { front:"편서풍대의 특징은?", back:"중위도에서 서쪽→동쪽으로 불며 비를 가져옴" },
+      { front:"열대우림의 핵심 한 줄", back:"연중 고온다습, 최소우월 60mm 이상, 스콜" },
+      { front:"열대우림의 주된 원인은?", back:"적도수렴대" },
+      { front:"열대 몬순의 핵심 한 줄", back:"짧은 건기, 계절풍 영향, 메갈라야·아삼 지방" },
+      { front:"사바나의 핵심 한 줄", back:"건기와 우기가 뚜렷하게 구분" },
+      { front:"사바나의 우기 원인은?", back:"적도수렴대" },
+      { front:"사바나의 건기 원인은?", back:"아열대 고압대" },
+      { front:"온대의 기준은?", back:"최한월 -3~18도" },
+      { front:"지중해성 기후의 계절 특징은?", back:"여름 고온건조, 겨울 온난습윤" },
+      { front:"지중해성 기후의 여름 원인은?", back:"아열대 고압대" },
+      { front:"지중해성 기후의 겨울 원인은?", back:"편서풍대" },
+      { front:"서안 해양성 기후의 핵심 특징은?", back:"여름 냉량습윤, 겨울 온난습윤, 연교차 작음" },
+      { front:"서안 해양성 기후의 주된 원인은?", back:"편서풍대 + 난류" },
+      { front:"온대 겨울건조 기후의 핵심 특징은?", back:"여름 고온다습, 겨울 매우 건조" },
+      { front:"냉대의 기준은?", back:"최한월 -3도 미만, 최난월 10도 초과" },
+      { front:"냉대 기후의 특징 한 줄은?", back:"연교차가 크다" },
+      { front:"툰드라와 빙설 구분 기준은?", back:"툰드라: 최난월 0~10도, 빙설: 최난월 0도 미만" },
+      { front:"빙설 기후의 기준은?", back:"최난월 0도 미만" },
+      { front:"스텝과 사막 기준은?", back:"스텝 250~500mm, 사막 0~250mm" },
+      { front:"건조 기후 전체 기준은?", back:"연강수량 500mm 미만" },
+      { front:"열대 고산 기후의 특징은?", back:"연중 온난, 상춘기후, 연교차 < 일교차" },
+      { front:"열대우림의 비 특징은?", back:"모든 달 비 많고 최소우월 60mm 이상" },
+      { front:"열대 몬순의 비 특징은?", back:"짧은 건기 + 여름철 비 폭증" },
+      { front:"사바나의 비 특징은?", back:"우기·건기 뚜렷" },
+      { front:"지중해성 기후의 강수 특징은?", back:"여름 건조, 겨울 습윤" },
+      { front:"서안 해양성 기후의 강수 특징은?", back:"연중 습윤" },
+      { front:"수목기후는?", back:"열대, 온대, 냉대" },
+      { front:"무수목기후는?", back:"건조, 툰드라, 빙설, 고산 일부" },
+      { front:"사하라 사막이 형성된 이유는?", back:"아열대 고압대" },
+      { front:"타클라마칸 사막이 형성된 이유는?", back:"격해도(내륙 깊숙한 위치)" },
+      { front:"고비 사막이 형성된 이유는?", back:"격해도" },
+      { front:"칼라하리 사막이 형성된 이유는?", back:"아열대 고압대" },
+      { front:"파타고니아 사막이 형성된 이유는?", back:"바람그늘" },
+      { front:"아타카마 사막이 형성된 이유는?", back:"한류" },
+      { front:"나미브 사막이 형성된 이유는?", back:"한류" },
+      { front:"사하라 사막의 위치는?", back:"북아프리카" },
+      { front:"타클라마칸 사막의 위치는?", back:"중국 서부 내륙" },
+      { front:"고비 사막의 위치는?", back:"몽골과 중국 북부" },
+      { front:"칼라하리 사막의 위치는?", back:"남부 아프리카 내륙" },
+      { front:"파타고니아 사막의 위치는?", back:"남아메리카 남부 동안" },
+      { front:"아타카마 사막의 위치는?", back:"남아메리카 서안" },
+      { front:"나미브 사막의 위치는?", back:"남서아프리카 서안" },
+      { front:"로키 산맥의 위치는?", back:"북아메리카 서부" },
+      { front:"안데스 산맥의 위치는?", back:"남아메리카 서부" },
+      { front:"알프스 산맥의 위치는?", back:"유럽 남부" },
+      { front:"히말라야 산맥의 위치는?", back:"인도 북쪽" },
+      { front:"애팔래치아 산맥의 위치는?", back:"북아메리카 동부" },
+      { front:"우랄 산맥의 위치는?", back:"유럽과 아시아 경계" },
+      { front:"스칸디나비아 산맥의 위치는?", back:"북유럽" },
+      { front:"드라켄즈버그 산맥의 위치는?", back:"아프리카 남동부" },
+      { front:"그레이트디바이딩 산맥의 위치는?", back:"오스트레일리아 동부" },
+      { front:"신기 습곡산지의 대표는?", back:"알프스, 히말라야, 안데스, 로키" },
+      { front:"고기 습곡산지의 대표는?", back:"애팔래치아, 우랄, 스칸디나비아, 드라켄즈버그, 그레이트디바이딩" },
+      { front:"리아스 해안의 위치와 특징은?", back:"에스파냐 북서부, V자곡, 하천 침식, 섬,반도,만 등이 많은 복잡한 해안선 " },
+      { front:"피오르 해안의 위치와 특징은?", back:"노르웨이 서부, U자곡, 빙하 침식, 좁고 긴 형태의 만이 많으며 수심이 깊음" }
+    ];
+
+    let flashIndex = 0;
+    let flashFront = true;
+    let flashOrder = [...flashData.keys()];
+
+    // ── 기후 카드 렌더링 ──────────────────────────────────────────
+    function renderClimateCards() {
+      document.getElementById("climateCards").innerHTML = climateData.map(item => `
+        <article class="card">
+          <div><span class="type-pill ${item.colorClass}">${item.category}</span>
+          <h3 style="margin:0 0 6px;">${item.label}</h3></div>
+          <ul class="note-list">${item.points.map(p => `<li>${p}</li>`).join("")}</ul>
+          <p><strong>세부:</strong></p>
+          <ul class="note-list">${item.details.map(d => `<li>${d}</li>`).join("")}</ul>
+        </article>
+      `).join("");
+    }
+
+    // ── 그래프 렌더링 ─────────────────────────────────────────────
+    function drawChart(quiz) {
+      const el = document.getElementById("chart");
+      if (!el) return;
+
+      const W = 760, H = 370, P = 48;
+      const iW = W - P * 2, iH = H - P * 2;
+      const rainMax = 400, tMin = -40, tMax = 40;
+
+      const tempPts = quiz.temp.map((v, i) => ({
+        x: P + (iW / 11) * i,
+        y: H - P - ((v - tMin) / (tMax - tMin)) * iH,
+        v, i
+      }));
+
+      const gridLines = Array.from({ length: 9 }, (_, s) => {
+        const y = P + (iH / 8) * s;
+        return `<line class="chart-grid" x1="${P}" y1="${y}" x2="${W-P}" y2="${y}"/>`;
+      }).join("");
+
+      const tempLabels = [40,30,20,10,0,-10,-20,-30,-40].map((t, s) => {
+        const y = P + (iH / 8) * s;
+        return `<text class="chart-axis-text" x="${P-10}" y="${y+4}" text-anchor="end">${t}</text>`;
+      }).join("");
+
+      const rainLabels = [400,300,200,100,0].map((r, s) => {
+        const y = P + (iH / 4) * s;
+        return `<text class="chart-axis-text" x="${W-P+10}" y="${y+4}" text-anchor="start">${r}</text>`;
+      }).join("");
+
+      const monthLabels = ["1","2","3","4","5","6","7","8","9","10","11","12"].map((m, i) => {
+        const x = P + (iW / 11) * i;
+        return `<text class="chart-axis-text" x="${x}" y="${H-10}" text-anchor="middle">${m}월</text>`;
+      }).join("");
+
+      const bars = quiz.rain.map((v, i) => {
+        const x = P + (iW / 11) * i;
+        const bW = 26;
+        const sv = clamp(v, 0, rainMax);
+        const bH = (sv / rainMax) * iH;
+        const y  = H - P - bH;
+        return `<rect class="chart-bar-rain" x="${x-bW/2}" y="${y}" width="${bW}" height="${bH}" rx="5"><title>${i+1}월 강수량 ${v}mm</title></rect>`;
+      }).join("");
+
+      const path = tempPts.map(p => `${p.x},${p.y}`).join(" ");
+      const dots = tempPts.map(p => `<circle class="chart-dot-temp" cx="${p.x}" cy="${p.y}" r="4"><title>${p.i+1}월 기온 ${p.v}°C</title></circle>`).join("");
+
+      el.innerHTML = `
+        <svg viewBox="0 0 ${W} ${H}" width="100%" height="100%">
+          ${gridLines}
+          ${tempLabels}
+          ${rainLabels}
+          ${monthLabels}
+          ${bars}
+          <polyline class="chart-line-temp" points="${path}"/>
+          ${dots}
+          <line class="chart-grid" x1="${P}" y1="${H-P}" x2="${W-P}" y2="${H-P}"/>
+        </svg>
+      `;
+    }
+
+    // ── 퀴즈 렌더링 ───────────────────────────────────────────────
+    let lastAnswer = null;
+    function renderQuiz() {
+      if (examMode && examQueue.length > 0) {
+        currentQuiz = examQueue[examIndex];
+      } else {
+        let candidate;
+do {
+  candidate = practicePool[Math.floor(Math.random() * practicePool.length)];
+} while (candidate.answer === lastAnswer && practicePool.length > 1);
+currentQuiz = candidate;
+lastAnswer = currentQuiz.answer;}
+      questionAnswered = false;
+
+      const titleEl   = document.getElementById("quizTitle");
+      const resultEl  = document.getElementById("quizResult");
+      const inputEl   = document.getElementById("answerInput");
+      const infoEl    = document.getElementById("examInfo");
+
+      if (titleEl)  titleEl.textContent  = "기후 그래프 문제";
+      if (resultEl) resultEl.textContent = "그래프를 보고 기후 이름을 직접 입력해 보세요.";
+      if (inputEl)  inputEl.value        = "";
+
+      if (infoEl) {
+        infoEl.textContent = examMode
+          ? `랜덤 시험모드 ${examIndex + 1} / ${examQueue.length} | 맞은 개수 ${examCorrect}`
+          : `일반 연습 모드 (풀 ${practicePool.length}개 그래프 중 랜덤)`;
+      }
+
+      drawChart(currentQuiz);
+    }
+
+    // ── 정답 확인 ─────────────────────────────────────────────────
+    function normalize(s) { return s.replace(/\s+/g, "").trim(); }
+
+    function checkAnswer() {
+      const inputEl  = document.getElementById("answerInput");
+      const resultEl = document.getElementById("quizResult");
+      const scoreEl  = document.getElementById("scoreBox");
+      const infoEl   = document.getElementById("examInfo");
+
+      if (questionAnswered) {
+        resultEl.textContent = "이미 채점했습니다. 다음 문제로 넘어가세요.";
+        return;
+      }
+      const val = inputEl.value.trim();
+      if (!val) { resultEl.textContent = "답을 먼저 입력해 주세요."; return; }
+
+      totalCount += 1;
+      const accepted = [currentQuiz.answer, ...(currentQuiz.aliases || [])].map(normalize);
+      const correct  = accepted.includes(normalize(val));
+
+      if (correct) {
+        solvedCount += 1;
+        if (examMode) examCorrect += 1;
+        resultEl.innerHTML = `<span class="result-correct">✓ 정답</span>\n${currentQuiz.explanation}`;
+      } else {
+        resultEl.innerHTML = `<span class="result-wrong">✗ 오답</span>\n정답은 <strong>${currentQuiz.answer}</strong>입니다.\n${currentQuiz.explanation}`;
+      }
+      questionAnswered = true;
+
+      if (scoreEl) scoreEl.textContent = `점수: ${solvedCount} / ${totalCount}`;
+      if (infoEl && examMode) infoEl.textContent = `랜덤 시험모드 ${examIndex + 1} / ${examQueue.length} | 맞은 개수 ${examCorrect}`;
+    }
+
+    function revealAnswer() {
+      const resultEl = document.getElementById("quizResult");
+      if (resultEl) {
+        resultEl.innerHTML = `<strong>정답 확인</strong>\n정답: <strong>${currentQuiz.answer}</strong>\n${currentQuiz.explanation}`;
+      }
+      questionAnswered = true;
+    }
+function startExamMode() {
+      const shuffled = [...examPool].sort(() => Math.random() - 0.5);
+      let lastExamAnswer = null;
+      examQueue = [];
+      for (const q of shuffled) {
+        if (q.answer !== lastExamAnswer) {
+          examQueue.push(q);
+          lastExamAnswer = q.answer;
+        }
+        if (examQueue.length >= 10) break;
+      }
+      examMode    = true;
+      examIndex   = 0;
+      examCorrect = 0;
+      renderQuiz();
+    }
+
+    function goNextQuestion() {
+      const resultEl = document.getElementById("quizResult");
+      const infoEl   = document.getElementById("examInfo");
+
+      if (examMode) {
+        if (examIndex < examQueue.length - 1) {
+          examIndex += 1;
+          renderQuiz();
+        } else {
+          if (resultEl) resultEl.innerHTML = `<strong>랜덤 시험 종료</strong>\n최종 점수: <strong>${examCorrect} / ${examQueue.length}</strong>`;
+          if (infoEl)   infoEl.textContent = `시험 종료 | 최종 점수 ${examCorrect} / ${examQueue.length}`;
+          examMode    = false;
+          examQueue   = [];
+          examIndex   = 0;
+          examCorrect = 0;
+          questionAnswered = false;
+        }
+      } else {
+        renderQuiz();
+      }
+    }
+
+    // ── 플래시카드 ────────────────────────────────────────────────
+    function renderFlashCard() {
+      const card = flashData[flashOrder[flashIndex]];
+      const modeEl = document.getElementById("flashMode");
+      const mainEl = document.getElementById("flashMain");
+      const subEl  = document.getElementById("flashSub");
+      if (modeEl) modeEl.textContent = flashFront ? "앞면: 질문" : "뒷면: 정답";
+      if (mainEl) mainEl.textContent = flashFront ? card.front : card.back;
+      if (subEl)  subEl.textContent  = flashFront ? "카드를 눌러 정답 보기" : "다시 누르면 질문으로 돌아갑니다";
+    }
+
+    function nextFlash() {
+      flashFront = true;
+      const prev = flashOrder[flashIndex];
+      let next;
+      do {
+        next = Math.floor(Math.random() * flashData.length);
+      } while (next === prev);
+      flashOrder[flashIndex] = next;
+      renderFlashCard();
+    }
+    function shuffleFlash() {
+      for (let i = flashOrder.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [flashOrder[i], flashOrder[j]] = [flashOrder[j], flashOrder[i]];
+      }
+      flashIndex = 0;
+      flashFront = true;
+      renderFlashCard();
+    }
+
+    // ── 이벤트 바인딩 ─────────────────────────────────────────────
+    document.getElementById("checkAnswerBtn")?.addEventListener("click", checkAnswer);
+    document.getElementById("nextQuizBtn")?.addEventListener("click", goNextQuestion);
+    document.getElementById("revealBtn")?.addEventListener("click", revealAnswer);
+    document.getElementById("startExamBtn")?.addEventListener("click", startExamMode);
+    document.getElementById("nextFlashBtn")?.addEventListener("click", nextFlash);
+    document.getElementById("shuffleFlashBtn")?.addEventListener("click", shuffleFlash);
+    document.getElementById("answerInput")?.addEventListener("keydown", e => { if (e.key === "Enter") checkAnswer(); });
+    document.getElementById("flashCard")?.addEventListener("click", () => { flashFront = !flashFront; renderFlashCard(); });
+
+    // ── 초기화 ────────────────────────────────────────────────────
+    renderClimateCards();
+    renderQuiz();
+    renderFlashCard();
+
+    const flashTotalEl = document.getElementById("flashTotal");
+    if (flashTotalEl) flashTotalEl.textContent = flashData.length;
+  </script>
+</body>
+</html>
