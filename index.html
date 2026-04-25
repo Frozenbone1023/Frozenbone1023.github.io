@@ -858,40 +858,62 @@
       }
       return t.map(v => Math.round(clamp(v, -40, 40)));
     }
+function isSouthernHemisphere(temp) {
+      // 1~2월(인덱스 0,1)이 가장 따뜻하면 남반구
+      const avg12 = (temp[0] + temp[1]) / 2;
+      const avg67 = (temp[6] + temp[7]) / 2;
+      return avg12 > avg67;
+    }
 
-    function applyRainRules(rain, rules, answer) {
+    function applyRainRules(rain, rules, answer, temp) {
       let r = [...rain];
+      const southern = isSouthernHemisphere(temp);
+
+      // 여름/겨울 달 인덱스 (남반구면 반전)
+      const summerMonths = southern ? [11,0,1] : [5,6,7];
+      const winterMonths = southern ? [5,6,7]  : [11,0,1];
+
       // 전체 하한
       if (rules.rainFloorAll !== undefined)
         r = r.map(v => Math.max(v, rules.rainFloorAll));
       // 전체 상한
       if (rules.rainCeilAll !== undefined)
         r = r.map(v => Math.min(v, rules.rainCeilAll));
+
       // 사바나 건기/우기 극단화
       if (answer === "사바나") {
-        rules.dryMonths.forEach(m => { r[m] = Math.min(r[m], rules.dryMax); });
-        rules.wetMonths.forEach(m => { r[m] = Math.max(r[m], rules.wetMin); });
+        const dryM  = southern ? [5,6,7,8,9]   : [11,0,1,2,3];
+        const wetM  = southern ? [11,0,1,2,3]   : [5,6,7,8,9];
+        dryM.forEach(m => { r[m] = Math.min(r[m], rules.dryMax ?? 15); });
+        wetM.forEach(m => { r[m] = Math.max(r[m], rules.wetMin ?? 120); });
       }
+
       // 열대 몬순 건기/우기
       if (answer === "열대 몬순") {
-        rules.dryMonths.forEach(m => { r[m] = Math.min(r[m], 40); });
-        rules.wetMonths.forEach(m => { r[m] = Math.max(r[m], 280); });
+        const dryM = southern ? [5,6,7,10,11] : [0,1,2,10,11];
+        const wetM = southern ? [11,0,1,2]    : [5,6,7,8];
+        dryM.forEach(m => { r[m] = Math.min(r[m], 40); });
+        wetM.forEach(m => { r[m] = Math.max(r[m], 280); });
       }
-      // 지중해성 여름 건조, 겨울 습윤
+
+      // 지중해성: 여름 건조, 겨울 습윤
       if (answer === "지중해성") {
-        [5,6,7].forEach(m => { r[m] = Math.min(r[m], rules.summerDryMax ?? 8); });
-        [11,0,1].forEach(m => { r[m] = Math.max(r[m], rules.winterWetMin ?? 60); });
+        summerMonths.forEach(m => { r[m] = Math.min(r[m], rules.summerDryMax ?? 8); });
+        winterMonths.forEach(m => { r[m] = Math.max(r[m], rules.winterWetMin ?? 60); });
       }
-      // 온대 겨울건조
+
+      // 온대 겨울건조: 겨울 건조, 여름 다습
       if (answer === "온대 겨울건조") {
-        [11,0,1].forEach(m => { r[m] = Math.min(r[m], rules.winterDryMax ?? 8); });
-        [5,6,7].forEach(m => { r[m] = Math.max(r[m], rules.summerWetMin ?? 100); });
+        winterMonths.forEach(m => { r[m] = Math.min(r[m], rules.winterDryMax ?? 8); });
+        summerMonths.forEach(m => { r[m] = Math.max(r[m], rules.summerWetMin ?? 100); });
       }
+
       // 냉대 겨울건조
       if (answer === "냉대 겨울건조") {
-        [11,0,1].forEach(m => { r[m] = Math.min(r[m], rules.winterDryMax ?? 8); });
-        [5,6,7].forEach(m => { r[m] = Math.max(r[m], rules.summerWetMin ?? 60); });
+        winterMonths.forEach(m => { r[m] = Math.min(r[m], rules.winterDryMax ?? 8); });
+        summerMonths.forEach(m => { r[m] = Math.max(r[m], rules.summerWetMin ?? 60); });
       }
+
       // 스텝 연강수 범위
       if (answer === "스텝") {
         const total = r.reduce((a,b) => a+b, 0);
@@ -904,8 +926,10 @@
           r = r.map(v => Math.round(v * scale));
         }
       }
+
       return r.map(v => clamp(Math.round(v), 0, 400));
     }
+  
 
     function buildVariantsFinal(baseList) {
       const result = [];
@@ -919,7 +943,7 @@
             const offset = Math.cos(seed2 + mi * 1.2) * rules.rainJitter;
             return Math.round(v * scale + offset);
           });
-          rain = applyRainRules(rain, rules, item.answer);
+           rain = applyRainRules(rain, rules, item.answer, item.temp);
 
           let temp = item.temp.map((v, mi) => {
             const offset = Math.sin(seed1 * 0.5 + mi * 0.7) * rules.tempJitter;
